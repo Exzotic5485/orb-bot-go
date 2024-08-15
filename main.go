@@ -15,9 +15,9 @@ import (
 var (
 	GuildID      = flag.String("guild", "", "Test guild ID. If not passed - bot registers commands globally")
 	BotToken     = flag.String("token", "", "Bot access token")
-	RconHost     = flag.String("rconhost", "", "")
-	RconPassword = flag.String("rconpassword", "", "")
-	BypassRoleID = flag.String("bypassrole", "", "")
+	RconHost     = flag.String("rconhost", "", "The ip and port of the minecraft rcon server")
+	RconPassword = flag.String("rconpassword", "", "The password defined in your 'server.properties' file")
+	BypassRoleID = flag.String("bypassrole", "", "The discord role ID to bypass the orb limit")
 )
 
 var bot *discordgo.Session
