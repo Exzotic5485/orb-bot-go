@@ -24,10 +24,14 @@ func ClaimOrb(id, username string) error {
 
 	defer r.Close()
 
-	_, err = r.Execute(fmt.Sprintf("origin gui %s", username))
+	response, err := r.Execute(fmt.Sprintf("origin gui %s", username))
 
 	if err != nil {
 		return err
+	}
+
+	if response == "No player was found" {
+		return ErrPlayerNotFound
 	}
 
 	orbStore.Increment(id, 1)

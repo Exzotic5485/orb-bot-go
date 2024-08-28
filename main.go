@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"log"
@@ -64,6 +65,17 @@ var (
 			err := ClaimOrb(i.Member.User.ID, username)
 
 			if err != nil {
+				if errors.Is(err, ErrPlayerNotFound) {
+					bot.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+						Type: discordgo.InteractionResponseChannelMessageWithSource,
+						Data: &discordgo.InteractionResponseData{
+							Content: fmt.Sprintf("✖ Could not find player: `%v` in the server. Make sure you are in the server before redeeming an orb.", username),
+						},
+					})
+
+					return
+				}
+
 				log.Printf("Error while redeeming orb for id '%s', user '%s': %v", i.Member.User.ID, username, err)
 
 				bot.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
@@ -72,6 +84,7 @@ var (
 						Content: "⚠ An error has occured while claiming the orb. Please try again or contact support.",
 					},
 				})
+				
 				return
 			}
 
